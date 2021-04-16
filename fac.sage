@@ -32,14 +32,16 @@ def test_Schnorr(N, n, prec=1000):
 	def sr(x):
 		return round(x * 2^prec)
 
-	diag = [sr(N*f[i]) for i in range(n)] + [sr(N*ln(N))]
+	# N'
+	N_ = round(N^(1 / (n + 1)))
+
+	diag = [sr(f[i]) for i in range(n)] + [sr(N_*ln(N))]
 	B = diagonal_matrix(diag, sparse=False)
 	for i in range(n):
-		B[i, n] = sr(N*ln(P[i]))
-
+		B[i, n] = sr(N_*ln(P[i]))
 
 	b = svp(B)
-	e = [b[i] / sr(N*f[i]) for i in range(n)]
+	e = [b[i] / sr(f[i]) for i in range(n)]
 
 	u = 1
 	v = 1
